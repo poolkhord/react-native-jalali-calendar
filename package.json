@@ -1,0 +1,70 @@
+{
+  "name": "react-native-jalali-calendar",
+  "version": "1.3.3",
+  "description": "React Native Jalaali calendar",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/poolkhord/react-native-jalali-calendar.git"
+  },
+  "keywords": [
+    "react-native",
+    "react-native-web",
+    "calendar",
+    "jalali"
+  ],
+  "author": "Hossein mohammadi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/poolkhord/react-native-jalali-calendar/issues"
+  },
+  "homepage": "https://github.com/poolkhord/react-native-jalali-calendar#readme",
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@react-native-community/eslint-config": "^0.0.7",
+    "babel-jest": "^25.1.0",
+    "babel-preset-react-native": "^4.0.1",
+    "commitlint": "^8.3.5",
+    "cross-env": "^7.0.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "husky": "^4.2.3",
+    "jest": "^25.1.0",
+    "moment-jalaali": "^0.9.1",
+    "prettier": "^1.19.1",
+    "react": "16.12.0",
+    "react-native": "^0.61.5",
+    "react-native-reanimated": "^1.7.0",
+    "react-native-vector-icons": "^6.6.0",
+    "react-test-renderer": "^16.12.0",
+    "starkstring": "^0.2.4"
+  },
+  "peerDependencies": {
+    "moment-jalaali": ">=0.9",
+    "react": ">=16.0",
+    "react-native": ">=0.61",
+    "react-native-reanimated": ">=1.7",
+    "react-native-vector-icons": ">=6.6",
+    "starkstring": ">=0.2"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "yarn lint && yarn test"
+    }
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.(js|ts|tsx)$": "babel-jest"
+    },
+    "preset": "react-native",
+    "setupFiles": [
+      "./path/to/jestSetupFile.js"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+@font-face {
+  font-family: IRANYekanMobileFN;
+  font-style: normal;
+  font-weight: bold;
+  src: url(./fonts/IRANYekanMobileBold.ttf) format('truetype');
+}
+@font-face {
+  font-family: IRANYekanMobileFN;
+  font-style: normal;
+  font-weight: medium;
+  src: url(./fonts/IRANYekanMobileMedium.ttf) format('truetype');
+}
+@font-face {
+  font-family: IRANYekanMobileFN;
+  font-style: normal;
+  font-weight: regular;
+  src: url(./fonts/IRANYekanMobileRegular.ttf) format('truetype');
+}

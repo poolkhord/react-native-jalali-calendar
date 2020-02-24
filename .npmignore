@@ -1,0 +1,4 @@
+.prettierrc
+.gitattributes
+__tests__/
+examples/
