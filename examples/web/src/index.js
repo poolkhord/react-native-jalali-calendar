@@ -1,5 +1,6 @@
 import { AppRegistry } from "react-native";
 import React from "react";
+import { JalaliCalendar } from "../../../src";
 
 // Generate required css
 import MaterialCommunityIcons from "react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf";
@@ -22,7 +23,7 @@ document.head.appendChild(style);
 
 ////  end #1
 
-AppRegistry.registerComponent("examples-web", () => () => <div>hello</div>);
+AppRegistry.registerComponent("examples-web", () => () => <JalaliCalendar />);
 AppRegistry.runApplication("examples-web", {
   rootTag: document.getElementById("root"),
 });

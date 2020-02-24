@@ -4,6 +4,7 @@
   "description": "React Native Jalaali calendar",
   "main": "src/index.js",
   "scripts": {
+    "lint": "eslint --ext '.js' .",
     "test": "jest"
   },
   "repository": {
@@ -26,6 +27,7 @@
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@commitlint/config-conventional": "^8.3.4",
     "@react-native-community/eslint-config": "^0.0.7",
+    "@typescript-eslint/parser": "^2.20.0",
     "babel-jest": "^25.1.0",
     "babel-preset-react-native": "^4.0.1",
     "commitlint": "^8.3.5",
@@ -37,15 +39,20 @@
     "moment-jalaali": "^0.9.1",
     "prettier": "^1.19.1",
     "react": "16.12.0",
+    "react-art": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-native-web": "^0.12.1",
     "react-native": "^0.61.5",
     "react-native-reanimated": "^1.7.0",
     "react-native-vector-icons": "^6.6.0",
     "react-test-renderer": "^16.12.0",
-    "starkstring": "^0.2.4"
+    "react-scripts": "^3.4.0",
+    "starkstring": "^0.2.4",
+    "typescript": "3.4.3"
   },
   "peerDependencies": {
     "moment-jalaali": ">=0.9",
-    "react": ">=16.0",
+    "react": ">=16.12",
     "react-native": ">=0.61",
     "react-native-reanimated": ">=1.7",
     "react-native-vector-icons": ">=6.6",
@@ -60,11 +67,8 @@
   "jest": {
     "testEnvironment": "node",
     "transform": {
-      "^.+\\.(js|ts|tsx)$": "babel-jest"
+      "^.+\\.(js)$": "babel-jest"
     },
-    "preset": "react-native",
-    "setupFiles": [
-      "./path/to/jestSetupFile.js"
-    ]
+    "preset": "react-native"
   }
 }
