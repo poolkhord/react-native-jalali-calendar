@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, I18nManager } from "react-native";
 import starkString from "starkstring";
 
 import { colors } from "../assets";
@@ -19,7 +19,7 @@ const Header = memo(({ style, month, year }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
+    flexDirection: I18nManager.isRTL ? "row" : "row-reverse",
     justifyContent: "center",
     alignItems: "center",
     marginTop: 16,

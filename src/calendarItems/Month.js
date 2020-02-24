@@ -1,5 +1,5 @@
 import React, { memo, useState, useMemo } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, I18nManager } from "react-native";
 import Week from "./Week";
 import moment from "moment-jalaali";
 
@@ -65,7 +65,7 @@ const WeekNames = memo(
 
 const styles = StyleSheet.create({
   weekdaysContainer: {
-    flexDirection: "row",
+    flexDirection: I18nManager.isRTL ? "row" : "row-reverse",
     alignItems: "center",
     marginBottom: 20,
   },

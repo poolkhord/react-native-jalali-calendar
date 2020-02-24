@@ -1,7 +1,7 @@
-import { AppRegistry } from "react-native";
-import React from "react";
-import { JalaliCalendar } from "../../../src";
-
+import { AppRegistry, I18nManager, View } from "react-native";
+I18nManager.forceRTL(true);
+import React, { Suspense, lazy } from "react";
+const JalaliCalendar = lazy(() => import("./app"));
 // Generate required css
 import MaterialCommunityIcons from "react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf";
 const iconFontStyles = `@font-face {
@@ -23,7 +23,11 @@ document.head.appendChild(style);
 
 ////  end #1
 
-AppRegistry.registerComponent("examples-web", () => () => <JalaliCalendar />);
+AppRegistry.registerComponent("examples-web", () => () => (
+  <Suspense fallback={<View />}>
+    <JalaliCalendar />
+  </Suspense>
+));
 AppRegistry.runApplication("examples-web", {
   rootTag: document.getElementById("root"),
 });

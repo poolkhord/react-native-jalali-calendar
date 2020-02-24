@@ -9,17 +9,17 @@ const ArrowButton = memo(({ iconName, iconColor, onPress }) => (
   </TouchableOpacity>
 ));
 
-export const NavigateBar = memo(({ style, onPreviousMonth, onNextMonth }) => {
+export const NavigateBar = memo(({ style, onLeftPress, onRightPress }) => {
   return (
     <View style={[styles.arrowsContainer, style]}>
       <ArrowButton
-        iconName={I18nManager.isRTL ? "arrow-right" : "arrow-left"}
-        onPress={onPreviousMonth}
+        iconName={"arrow-right"}
+        onPress={onLeftPress}
         iconColor={colors.arrows}
       />
       <ArrowButton
-        iconName={I18nManager.isRTL ? "arrow-left" : "arrow-right"}
-        onPress={onNextMonth}
+        iconName={"arrow-left"}
+        onPress={onRightPress}
         iconColor={colors.arrows}
       />
     </View>
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     top: 16,
     left: 40,
     right: 40,
-    flexDirection: "row",
+    flexDirection: I18nManager.isRTL ? "row" : "row-reverse",
     position: "absolute",
     justifyContent: "space-between",
   },

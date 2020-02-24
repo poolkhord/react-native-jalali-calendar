@@ -1,5 +1,11 @@
 import React, { memo, useCallback } from "react";
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  I18nManager,
+} from "react-native";
 import starkString from "starkstring";
 import { colors } from "../assets";
 
@@ -49,7 +55,7 @@ const Week = memo(
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flexDirection: "row",
+    flexDirection: I18nManager.isRTL ? "row" : "row-reverse",
   },
   dayContainer: {
     flex: 1,

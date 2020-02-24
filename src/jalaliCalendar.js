@@ -6,8 +6,6 @@ import CalendarComponent from "./CalendarComponent";
 import { colors } from "./assets";
 import { ViewPage } from "./pager";
 
-moment.loadPersian({ dialect: "persian-modern" });
-
 const createMonthsList = currentYear => {
   return Array.from({ length: 14 }, (v, i) => {
     let month = 13 - i;
@@ -51,11 +49,15 @@ const Calendar = memo(({ navigation }) => {
   const scrollIndex = useRef(Number(currentMoment.format("jM")));
   const months = createMonthsList(selectedYear);
 
+  const gotNext = index => {
+    scrollIndex.current = index;
+    viewPager.current.pageToIndex(index, true);
+  };
+
   const onNextMonth = () => {
     const newIndex = scrollIndex.current + 1;
     if (newIndex <= 13) {
-      scrollIndex.current = newIndex;
-      viewPager.current.pageToIndex(newIndex, true);
+      gotNext(newIndex);
     }
 
     if (newIndex >= 13) {
@@ -70,8 +72,7 @@ const Calendar = memo(({ navigation }) => {
   const onPreviousMonth = () => {
     const newIndex = scrollIndex.current - 1;
     if (newIndex >= 0) {
-      scrollIndex.current = newIndex;
-      viewPager.current.pageToIndex(newIndex, true);
+      gotNext(newIndex);
     }
 
     if (newIndex <= 0) {
@@ -100,8 +101,8 @@ const Calendar = memo(({ navigation }) => {
         })}
       </ViewPage>
       <NavigateBar
-        onNextMonth={onNextMonth}
-        onPreviousMonth={onPreviousMonth}
+        onRightPress={onNextMonth}
+        onLeftPress={onPreviousMonth}
         canGoBack={true}
       />
     </View>
