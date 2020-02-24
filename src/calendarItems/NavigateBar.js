@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { View, TouchableOpacity, StyleSheet, I18nManager } from "react-native";
 import Icon from "react-native-vector-icons/dist/MaterialCommunityIcons";
 import { colors } from "../assets";
 
@@ -13,12 +13,12 @@ export const NavigateBar = memo(({ style, onPreviousMonth, onNextMonth }) => {
   return (
     <View style={[styles.arrowsContainer, style]}>
       <ArrowButton
-        iconName="arrow-right"
+        iconName={I18nManager.isRTL ? "arrow-right" : "arrow-left"}
         onPress={onPreviousMonth}
         iconColor={colors.arrows}
       />
       <ArrowButton
-        iconName="arrow-left"
+        iconName={I18nManager.isRTL ? "arrow-left" : "arrow-right"}
         onPress={onNextMonth}
         iconColor={colors.arrows}
       />
