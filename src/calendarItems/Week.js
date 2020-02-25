@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
 
 const Day = memo(
   ({ isSelected, year, month, day, currentYear, currentMonth, currentDay }) => {
-    const { specialStyle, selectableDays } = getDayInfo(
+    const { specialStyle } = getDayInfo(
       isSelected,
       year,
       month,
@@ -93,8 +93,8 @@ const Day = memo(
     );
 
     const onPress = useCallback(() => {
-      selectableDays && Store.dispatch(select({ day, month, year }));
-    }, [selectableDays, day, month, year]);
+      Store.dispatch(select({ day, month, year }));
+    }, [day, month, year]);
 
     return (
       <TouchableOpacity
@@ -136,13 +136,16 @@ const getDayInfo = (
     selectableDays = true;
   }
 
-  const specialStyle = weekdays
-    ? "weekdayText"
-    : selectableDays
-    ? isSelected
-      ? "selectedDayText"
-      : "selectableDays"
-    : "previousDays";
+  function getStyle() {
+    if (weekdays) return "weekdayText";
+    if (isSelected) return "selectedDayText";
+
+    if (selectableDays) return "selectableDays";
+
+    return "previousDays";
+  }
+
+  const specialStyle = getStyle();
 
   return {
     specialStyle,
