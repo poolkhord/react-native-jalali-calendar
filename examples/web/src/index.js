@@ -25,7 +25,7 @@ document.head.appendChild(style);
 
 AppRegistry.registerComponent("examples-web", () => () => (
   <Suspense fallback={<View />}>
-    <JalaliCalendar />
+    <JalaliCalendar onSelect={arg => console.log("action", arg)} />
   </Suspense>
 ));
 AppRegistry.runApplication("examples-web", {

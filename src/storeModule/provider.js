@@ -1,13 +1,17 @@
 import React, { useReducer } from "react";
 
 /**
- * @type {React.FC<{store: any}}>}
+ * @type {React.FC<{store: any,dispatchListener:()=> void}}>}
  */
-export const Provider = ({ children, store }) => {
+export const Provider = ({ children, store, dispatchListener }) => {
   const { reducer, initialState, middleware } = store;
   const [state, dispatch] = useReducer(reducer, initialState);
   store.state = state;
-  store.dispatch = dispatch;
+
+  store.dispatch = (...arg) => {
+    dispatch(...arg);
+    dispatchListener?.(...arg);
+  };
 
   middleware && middleware({ state, initialState });
 

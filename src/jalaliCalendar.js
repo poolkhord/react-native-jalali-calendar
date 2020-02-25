@@ -1,11 +1,11 @@
-import React, { useState, useRef, memo, useMemo } from "react";
+import React, { useState, useRef, memo, useMemo, useCallback } from "react";
 import { View, StyleSheet } from "react-native";
 import moment from "moment-jalaali";
 import { NavigateBar } from "./calendarItems";
 import CalendarComponent from "./CalendarComponent";
 import { colors } from "./assets";
 import { ViewPage } from "./pager";
-import { Store } from "./store";
+import { Store, reducerTypes } from "./store";
 import { Provider } from "./storeModule";
 
 const createMonthsList = currentYear => {
@@ -28,7 +28,7 @@ const createMonthsList = currentYear => {
   }).reverse();
 };
 
-const Calendar = memo(({ navigation }) => {
+const Calendar = memo(({ onSelect }) => {
   const {
     currentMoment,
     currentMonth,
@@ -86,8 +86,15 @@ const Calendar = memo(({ navigation }) => {
     }
   };
 
+  const dispatchListener = useCallback(
+    ({ type, payload: { selected } }) => {
+      type === reducerTypes.SELECT && onSelect(selected);
+    },
+    [onSelect],
+  );
+
   return (
-    <Provider store={Store}>
+    <Provider dispatchListener={dispatchListener} store={Store}>
       <View style={styles.container}>
         <ViewPage
           ref={viewPager}
