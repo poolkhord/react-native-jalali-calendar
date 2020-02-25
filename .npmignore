@@ -7,6 +7,5 @@
 .prettierrc
 commitlint.config.js
 CODE_OF_CONDUCT.md
-yarn.lock
 __tests__/
 examples/
