@@ -18,3 +18,26 @@ You should be install react-native-reanimated react-native-vector-icons starkstr
 ```npm
 yarn add react-native-jalali-calendar react-native-reanimated react-native-vector-icons starkstring moment-jalaali
 ```
+
+Add code to root of project
+
+```js
+// Generate required css
+import MaterialCommunityIcons from "react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf";
+const iconFontStyles = `@font-face {
+  src: url(${MaterialCommunityIcons});
+  font-family: MaterialCommunityIcons;
+}`;
+
+// Create stylesheet
+const style = document.createElement("style");
+style.type = "text/css";
+if (style.styleSheet) {
+  style.styleSheet.cssText = iconFontStyles;
+} else {
+  style.appendChild(document.createTextNode(iconFontStyles));
+}
+
+// Inject stylesheet
+document.head.appendChild(style);
+```
