@@ -16,8 +16,7 @@ function arrayPadStart(arr, length) {
 }
 
 const Month = memo(
-  ({ selected, month, year, style, currentMonth, currentYear, currentDay }) => {
-    const [selectedItem, setSelectedItem] = useState(selected);
+  ({ month, year, style, currentMonth, currentYear, currentDay }) => {
     const items = useMemo(() => {
       let m = moment(`${year} ${month} 1`, "jYYYY jMM jD");
 
@@ -39,8 +38,6 @@ const Month = memo(
             <Week
               key={String(index)}
               days={day}
-              selected={selectedItem}
-              onChangeSelectedDay={setSelectedItem}
               month={month}
               year={year}
               currentMonth={currentMonth}

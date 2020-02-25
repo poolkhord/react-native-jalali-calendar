@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import starkString from "starkstring";
 import { colors } from "../assets";
+import { Store, select } from "../store";
 
 function arrayPadEnd(arr, maxLength, fill) {
   const a = [...arr];
@@ -18,33 +19,27 @@ function arrayPadEnd(arr, maxLength, fill) {
 }
 
 const Week = memo(
-  ({
-    days,
-    style,
-    onChangeSelectedDay,
-    selected,
-    month,
-    year,
-    currentMonth,
-    currentYear,
-    currentDay,
-  }) => {
+  ({ days, style, month, year, currentMonth, currentYear, currentDay }) => {
+    const [{ selected }] = Store.useStore();
     const daysPadded = arrayPadEnd(days, 7, null);
 
     return (
       <View style={[styles.mainContainer, style]}>
         {daysPadded.map((day, index) => {
+          const isSelected =
+            selected?.month === month &&
+            selected?.year === year &&
+            selected?.day === day;
           return (
             <Day
               key={String(day || `i${index}`)}
-              selected={selected}
+              isSelected={isSelected}
               year={year}
               month={month}
               day={day}
               currentYear={currentYear}
               currentMonth={currentMonth}
               currentDay={currentDay}
-              onChangeSelectedDay={onChangeSelectedDay}
             />
           );
         })}
@@ -86,18 +81,9 @@ const styles = StyleSheet.create({
 });
 
 const Day = memo(
-  ({
-    selected,
-    year,
-    month,
-    day,
-    currentYear,
-    currentMonth,
-    currentDay,
-    onChangeSelectedDay,
-  }) => {
-    const { specialStyle, isSelected, selectableDays } = getDayInfo(
-      selected,
+  ({ isSelected, year, month, day, currentYear, currentMonth, currentDay }) => {
+    const { specialStyle, selectableDays } = getDayInfo(
+      isSelected,
       year,
       month,
       day,
@@ -107,8 +93,8 @@ const Day = memo(
     );
 
     const onPress = useCallback(() => {
-      selectableDays && onChangeSelectedDay(day);
-    }, [selectableDays, onChangeSelectedDay, day]);
+      selectableDays && Store.dispatch(select({ day, month, year }));
+    }, [selectableDays, day, month, year]);
 
     return (
       <TouchableOpacity
@@ -129,7 +115,7 @@ const Day = memo(
 );
 
 const getDayInfo = (
-  selected,
+  isSelected,
   year,
   month,
   day,
@@ -138,7 +124,6 @@ const getDayInfo = (
   currentDay,
 ) => {
   let selectableDays = false;
-  const isSelected = selected === day;
   const weekdays = typeof day === "string";
 
   if (currentYear < year) {

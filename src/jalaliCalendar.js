@@ -5,6 +5,8 @@ import { NavigateBar } from "./calendarItems";
 import CalendarComponent from "./CalendarComponent";
 import { colors } from "./assets";
 import { ViewPage } from "./pager";
+import { Store } from "./store";
+import { Provider } from "./storeModule";
 
 const createMonthsList = currentYear => {
   return Array.from({ length: 14 }, (v, i) => {
@@ -85,27 +87,33 @@ const Calendar = memo(({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <ViewPage ref={viewPager} initialIndex={scrollIndex.current} height={306}>
-        {months.map((item, index) => {
-          return (
-            <CalendarComponent
-              key={String(index)}
-              month={item.month}
-              year={item.year}
-              currentMonth={currentMonth}
-              currentYear={currentYear}
-              currentDay={currentDay}
-            />
-          );
-        })}
-      </ViewPage>
-      <NavigateBar
-        onRightPress={onNextMonth}
-        onLeftPress={onPreviousMonth}
-        canGoBack={true}
-      />
-    </View>
+    <Provider store={Store}>
+      <View style={styles.container}>
+        <ViewPage
+          ref={viewPager}
+          initialIndex={scrollIndex.current}
+          height={306}
+        >
+          {months.map((item, index) => {
+            return (
+              <CalendarComponent
+                key={String(index)}
+                month={item.month}
+                year={item.year}
+                currentMonth={currentMonth}
+                currentYear={currentYear}
+                currentDay={currentDay}
+              />
+            );
+          })}
+        </ViewPage>
+        <NavigateBar
+          onRightPress={onNextMonth}
+          onLeftPress={onPreviousMonth}
+          canGoBack={true}
+        />
+      </View>
+    </Provider>
   );
 });
 
