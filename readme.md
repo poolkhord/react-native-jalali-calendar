@@ -13,7 +13,7 @@ it's useful for global state management and complex components state
 
 ## Install
 
-You should be install react-native-reanimated too
+You should be install react-native-reanimated react-native-vector-icons starkstring moment-jalaali too
 
 ```npm
 yarn add react-native-jalali-calendar react-native-reanimated react-native-vector-icons starkstring moment-jalaali
