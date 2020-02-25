@@ -96,7 +96,7 @@ const Calendar = memo(({ onSelect }) => {
 
   const dispatchListener = useCallback(
     ({ type, payload: { selected } }) => {
-      type === reducerTypes.SELECT && onSelect(selected);
+      type === reducerTypes.SELECT && onSelect?.(selected);
     },
     [onSelect],
   );
