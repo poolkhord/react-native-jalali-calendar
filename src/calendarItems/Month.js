@@ -1,4 +1,4 @@
-import React, { memo, useState, useMemo } from "react";
+import React, { memo, useMemo } from "react";
 import { View, StyleSheet, I18nManager } from "react-native";
 import Week from "./Week";
 import moment from "moment-jalaali";
