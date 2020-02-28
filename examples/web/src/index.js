@@ -1,6 +1,6 @@
 import { AppRegistry, I18nManager, View } from "react-native";
 I18nManager.forceRTL(true);
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, Profiler } from "react";
 const JalaliCalendar = lazy(() => import("./app"));
 // Generate required css
 import MaterialCommunityIcons from "react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf";
@@ -25,7 +25,30 @@ document.head.appendChild(style);
 const App = () => {
   return (
     <Suspense fallback={<View />}>
-      <JalaliCalendar onSelect={arg => console.log("action1", arg)} />
+      <Profiler
+        id={"1"}
+        onRender={(
+          id,
+          phase,
+          actualDuration,
+          baseDuration,
+          startTime,
+          commitTime,
+          interactions,
+        ) => {
+          // console.log(
+          //   id,
+          //   phase,
+          //   actualDuration,
+          //   baseDuration,
+          //   startTime,
+          //   commitTime,
+          //   interactions,
+          // );
+        }}
+      >
+        <JalaliCalendar onSelect={arg => console.log("action1", arg)} />
+      </Profiler>
       <JalaliCalendar onSelect={arg => console.log("action2", arg)} />
     </Suspense>
   );

@@ -5,17 +5,12 @@ import moment from "moment-jalaali";
 moment.loadPersian({ dialect: "persian-modern" });
 
 const CalendarItems = memo(
-  ({ month, year, currentMonth, currentYear, currentDay }) => {
-    let m = moment(`${year} ${month} 1`, "jYYYY jMM jD");
-
-    const monthName = m.format("jMMMM");
-
+  ({ index, currentMonth, currentYear, currentDay }) => {
     return (
       <Container>
-        <Header month={monthName} year={year} />
+        <Header index={index} />
         <Month
-          month={month}
-          year={year}
+          index={index}
           currentMonth={currentMonth}
           currentYear={currentYear}
           currentDay={currentDay}

@@ -5,31 +5,13 @@ import { NavigateBar } from "./calendarItems";
 import CalendarComponent from "./CalendarComponent";
 import { colors } from "./assets";
 import { ViewPage } from "./pager";
-import { Store, reducerTypes } from "./store";
+import { Store, reducerTypes, addToSelectedYear } from "./store";
 import { Provider } from "./storeModule";
-
-const createMonthsList = currentYear => {
-  return Array.from({ length: 14 }, (v, i) => {
-    let month = 13 - i;
-    let year = currentYear;
-
-    if (month === 13) {
-      month = 1;
-      year = currentYear + 1;
-    } else if (month === 0) {
-      month = 12;
-      year = currentYear - 1;
-    }
-
-    return {
-      month,
-      year,
-    };
-  }).reverse();
-};
+import { createMonthsList } from "./utils";
 
 const Calendar = memo(({ onSelect }) => {
   const viewPager = useRef();
+  const providerRef = useRef();
 
   const {
     currentMoment,
@@ -46,11 +28,7 @@ const Calendar = memo(({ onSelect }) => {
     };
   }, []);
 
-  const [selectedYear, setSelectedYear] = useState(
-    Number(currentMoment.format("jYYYY")),
-  );
   const scrollIndex = useRef(Number(currentMoment.format("jM")));
-  const months = createMonthsList(selectedYear);
 
   const gotNext = index => {
     scrollIndex.current = index;
@@ -66,7 +44,7 @@ const Calendar = memo(({ onSelect }) => {
     if (newIndex >= 13) {
       setTimeout(() => {
         scrollIndex.current = 1;
-        setSelectedYear(selectedYear + 1);
+        providerRef.current.dispatch(addToSelectedYear(1));
         viewPager.current.pageToIndex(1, false);
       }, 300);
     }
@@ -81,33 +59,36 @@ const Calendar = memo(({ onSelect }) => {
     if (newIndex <= 0) {
       setTimeout(() => {
         scrollIndex.current = 12;
-        setSelectedYear(selectedYear - 1);
+        providerRef.current.dispatch(addToSelectedYear(-1));
         viewPager.current.pageToIndex(12, false);
       }, 300);
     }
   };
 
   const dispatchListener = useCallback(
-    ({ type, payload: { selected } }) => {
+    ({ type, payload: { selected } = {} }) => {
       type === reducerTypes.SELECT && onSelect?.(selected);
     },
     [onSelect],
   );
 
   return (
-    <Provider dispatchListener={dispatchListener} store={Store}>
+    <Provider
+      ref={providerRef}
+      dispatchListener={dispatchListener}
+      store={Store}
+    >
       <View style={styles.container}>
         <ViewPage
           ref={viewPager}
           initialIndex={scrollIndex.current}
           height={306}
         >
-          {months.map((item, index) => {
+          {Array.from({ length: 14 }, (v, k) => k).map(index => {
             return (
               <CalendarComponent
-                key={String(index)}
-                month={item.month}
-                year={item.year}
+                key={index}
+                index={index}
                 currentMonth={currentMonth}
                 currentYear={currentYear}
                 currentDay={currentDay}

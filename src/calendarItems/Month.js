@@ -2,6 +2,7 @@ import React, { memo, useMemo } from "react";
 import { View, StyleSheet, I18nManager } from "react-native";
 import Week from "./Week";
 import moment from "moment-jalaali";
+import { Store } from "../store";
 
 function arrySplit(arr) {
   const a = [...arr];
@@ -16,7 +17,10 @@ function arrayPadStart(arr, length) {
 }
 
 const Month = memo(
-  ({ month, year, style, currentMonth, currentYear, currentDay }) => {
+  ({ index, style, currentMonth, currentYear, currentDay }) => {
+    const { months } = Store.useState();
+    const { month, year } = months[index];
+
     const items = useMemo(() => {
       let m = moment(`${year} ${month} 1`, "jYYYY jMM jD");
 
@@ -33,10 +37,10 @@ const Month = memo(
     return (
       <View style={[styles.daysContainer, style]}>
         <WeekNames />
-        {items.map((day, index) => {
+        {items.map((day, index1) => {
           return (
             <Week
-              key={String(index)}
+              key={String(index1)}
               days={day}
               month={month}
               year={year}

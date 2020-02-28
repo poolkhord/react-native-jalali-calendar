@@ -42,3 +42,23 @@ export function runTiming(clock, value, dest, animate) {
     state.position,
   ]);
 }
+
+export const createMonthsList = currentYear => {
+  return Array.from({ length: 14 }, (v, i) => {
+    let month = 13 - i;
+    let year = currentYear;
+
+    if (month === 13) {
+      month = 1;
+      year = currentYear + 1;
+    } else if (month === 0) {
+      month = 12;
+      year = currentYear - 1;
+    }
+
+    return {
+      month,
+      year,
+    };
+  }).reverse();
+};
