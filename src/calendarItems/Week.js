@@ -20,7 +20,7 @@ function arrayPadEnd(arr, maxLength, fill) {
 
 const Week = memo(
   ({ days, style, month, year, currentMonth, currentYear, currentDay }) => {
-    const [{ selected }] = Store.useStore();
+    const { selected } = Store.useState();
     const daysPadded = arrayPadEnd(days, 7, null);
 
     return (
@@ -82,7 +82,8 @@ const styles = StyleSheet.create({
 
 const Day = memo(
   ({ isSelected, year, month, day, currentYear, currentMonth, currentDay }) => {
-    const [, dispatch] = useContext(Store);
+    const dispatch = Store.useDispatch();
+
     const { specialStyle } = getDayInfo(
       isSelected,
       year,

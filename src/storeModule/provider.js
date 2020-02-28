@@ -1,6 +1,5 @@
 import React, {
   useReducer,
-  useMemo,
   useCallback,
   useImperativeHandle,
   forwardRef,
@@ -11,33 +10,42 @@ import React, {
  * @type {React.FC<{store: any,dispatchListener:()=> void}}>}
  */
 export const Provider = memo(
-  forwardRef(({ children, store, dispatchListener }, ref) => {
-    const { reducer, initialState, middleware } = store;
+  forwardRef((props, ref) => {
+    const { children, store } = props;
+
+    /**@type {import("./createStore").PrivateStore<{}>} */
+    const {
+      reducer,
+      initialState,
+      middleware,
+      stateContext,
+      dispatchContext,
+    } = store;
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    const dispatchWrapper = useCallback(
+    const dispatchWrapped = useCallback(
       (...arg) => {
         dispatch(...arg);
-        dispatchListener?.(...arg);
+        props.dispatchListener?.(...arg);
       },
-      [dispatchListener],
+      [props],
     );
 
-    middleware && middleware({ state, initialState });
+    middleware?.({ state, initialState });
 
     useImperativeHandle(
       ref,
       () => ({
         state,
-        dispatch: dispatchWrapper,
+        dispatch: dispatchWrapped,
       }),
-      [dispatchWrapper, state],
+      [dispatchWrapped, state],
     );
 
-    const value = useMemo(() => {
-      return [state, dispatchWrapper];
-    }, [state, dispatchWrapper]);
-
-    return <store.Provider value={value} children={children} />;
+    return (
+      <dispatchContext.Provider value={dispatchWrapped}>
+        <stateContext.Provider value={state}>{children}</stateContext.Provider>
+      </dispatchContext.Provider>
+    );
   }),
 );

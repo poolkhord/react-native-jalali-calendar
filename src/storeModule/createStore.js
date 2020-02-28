@@ -1,16 +1,26 @@
 import { createContext, useContext } from "react";
-
 /**
  * @template S
- * @typedef {[S, (state: S)=> any]} Store
+ * @typedef {object} Store
+ * @property {() => S} useState
+ * @property {() => (state: S) => void} useDispatch
  */
 
 /**
- * @template D
- * @typedef {object} Additional
- * @property {() => Store<D>} useStore
- * @property {D} state
- * @property {() => void} dispatch
+ * @template T
+ * @typedef {({state: T, initialState: T}) => void} Middleware
+ */
+
+/**
+ * @template S
+ * @typedef {object} PrivateStore
+ * @property {() => S} useState
+ * @property {import("react").Context<S>} stateContext
+ * @property {import("react").Context<() => void>} dispatchContext
+ * @property {() => any} reducer
+ * @property {S} initialState
+ * @property {Middleware<S>} middleware
+ *
  */
 
 /**
@@ -18,18 +28,23 @@ import { createContext, useContext } from "react";
  * @param {object} param0
  * @param {() => any} param0.reducer
  * @param {T} param0.initialState
- * @param {(store: any)=>void} param0.middleware
- * @returns {React.Context<T> & Additional<T>}
+ * @param {Middleware<T>} param0.middleware
+ * @returns {Store<T>}
  */
 export const createStore = ({ reducer, initialState, middleware }) => {
-  const context = createContext(initialState);
+  const stateContext = createContext(initialState);
+  const dispatchContext = createContext(initialState);
 
-  Object.assign(context, {
+  /**@type {PrivateStore<T>} */
+  const store = {
+    stateContext,
+    dispatchContext,
     reducer,
     initialState,
     middleware,
-    useStore: () => useContext(context),
-  });
+    useState: () => useContext(stateContext),
+    useDispatch: () => useContext(dispatchContext),
+  };
 
-  return context;
+  return store;
 };
