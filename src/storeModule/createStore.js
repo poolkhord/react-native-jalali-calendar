@@ -33,7 +33,7 @@ import { createContext, useContext } from "react";
  */
 export const createStore = ({ reducer, initialState, middleware }) => {
   const stateContext = createContext(initialState);
-  const dispatchContext = createContext(initialState);
+  const dispatchContext = createContext(() => {});
 
   /**@type {PrivateStore<T>} */
   const store = {
