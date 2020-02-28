@@ -4,6 +4,6 @@ import initialState from "./initialState";
 import * as reducerTypes from "./types";
 export * from "./actions";
 
-const StoreCalendar = createStore({ reducer, initialState });
+const StoreSelect = createStore({ reducer, initialState });
 
-export { reducerTypes, StoreCalendar };
+export { reducerTypes, StoreSelect };

@@ -49,7 +49,7 @@ const App = () => {
       >
         <JalaliCalendar onSelect={arg => console.log("action1", arg)} />
       </Profiler>
-      <JalaliCalendar onSelect={arg => console.log("action2", arg)} />
+      {/* <JalaliCalendar onSelect={arg => console.log("action2", arg)} /> */}
     </Suspense>
   );
 };

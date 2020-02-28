@@ -5,8 +5,9 @@ import { NavigateBar } from "./calendarItems";
 import CalendarComponent from "./CalendarComponent";
 import { colors } from "./assets";
 import { ViewPage } from "./pager";
-import { Store, reducerTypes, addToSelectedYear } from "./store";
+import { StoreCalendar, reducerTypes, addToSelectedYear } from "./store";
 import { Provider } from "./storeModule";
+import { StoreSelect } from "./storeSelect";
 
 const Calendar = memo(({ onSelect }) => {
   const viewPager = useRef();
@@ -72,29 +73,27 @@ const Calendar = memo(({ onSelect }) => {
   );
 
   return (
-    <Provider
-      ref={providerRef}
-      dispatchListener={dispatchListener}
-      store={Store}
-    >
+    <Provider ref={providerRef} store={StoreCalendar}>
       <View style={styles.container}>
-        <ViewPage
-          ref={viewPager}
-          initialIndex={scrollIndex.current}
-          height={306}
-        >
-          {Array.from({ length: 14 }, (v, k) => k).map(index => {
-            return (
-              <CalendarComponent
-                key={index}
-                index={index}
-                currentMonth={currentMonth}
-                currentYear={currentYear}
-                currentDay={currentDay}
-              />
-            );
-          })}
-        </ViewPage>
+        <Provider dispatchListener={dispatchListener} store={StoreSelect}>
+          <ViewPage
+            ref={viewPager}
+            initialIndex={scrollIndex.current}
+            height={306}
+          >
+            {Array.from({ length: 14 }, (v, k) => k).map(index => {
+              return (
+                <CalendarComponent
+                  key={index}
+                  index={index}
+                  currentMonth={currentMonth}
+                  currentYear={currentYear}
+                  currentDay={currentDay}
+                />
+              );
+            })}
+          </ViewPage>
+        </Provider>
         <NavigateBar
           onRightPress={onNextMonth}
           onLeftPress={onPreviousMonth}

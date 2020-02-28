@@ -2,11 +2,11 @@ import React, { memo } from "react";
 import { Text, View, StyleSheet, I18nManager } from "react-native";
 import starkString from "starkstring";
 import { colors } from "../assets";
-import { Store } from "../store";
+import { StoreCalendar } from "../store";
 import moment from "moment-jalaali";
 
 const Header = memo(({ index, style }) => {
-  const { months } = Store.useState();
+  const { months } = StoreCalendar.useState();
   const { month, year } = months[index];
   let m = moment(`${year} ${month} 1`, "jYYYY jMM jD");
 
