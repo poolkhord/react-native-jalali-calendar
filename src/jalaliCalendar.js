@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  useRef,
-  memo,
-  useMemo,
-  useCallback,
-  useEffect,
-} from "react";
+import React, { useState, useRef, memo, useMemo, useCallback } from "react";
 import { View, StyleSheet } from "react-native";
 import moment from "moment-jalaali";
 import { NavigateBar } from "./calendarItems";
@@ -14,7 +7,6 @@ import { colors } from "./assets";
 import { ViewPage } from "./pager";
 import { Store, reducerTypes } from "./store";
 import { Provider } from "./storeModule";
-import { reset } from "./store/actions";
 
 const createMonthsList = currentYear => {
   return Array.from({ length: 14 }, (v, i) => {
@@ -37,6 +29,8 @@ const createMonthsList = currentYear => {
 };
 
 const Calendar = memo(({ onSelect }) => {
+  const viewPager = useRef();
+
   const {
     currentMoment,
     currentMonth,
@@ -52,7 +46,6 @@ const Calendar = memo(({ onSelect }) => {
     };
   }, []);
 
-  const viewPager = useRef();
   const [selectedYear, setSelectedYear] = useState(
     Number(currentMoment.format("jYYYY")),
   );
@@ -100,12 +93,6 @@ const Calendar = memo(({ onSelect }) => {
     },
     [onSelect],
   );
-
-  useEffect(() => {
-    return () => {
-      Store.dispatch(reset());
-    };
-  }, []);
 
   return (
     <Provider dispatchListener={dispatchListener} store={Store}>

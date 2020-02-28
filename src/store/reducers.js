@@ -6,7 +6,4 @@ export default createReducer({
     ...state,
     selected,
   }),
-  [types.RESET]: (state, { payload }) => ({
-    ...payload,
-  }),
 });
