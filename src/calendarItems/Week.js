@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useContext } from "react";
+import React, { memo, useCallback } from "react";
 import {
   View,
   TouchableOpacity,
@@ -10,33 +10,19 @@ import starkString from "starkstring";
 import { colors } from "../assets";
 import { Store, select } from "../store";
 
-function arrayPadEnd(arr, maxLength, fill) {
-  const a = [...arr];
-
-  a.length < maxLength && a.push(fill);
-
-  return a.length < maxLength ? arrayPadEnd(a, maxLength, fill) : a;
-}
+import moment from "moment-jalaali";
 
 const Week = memo(
-  ({ days, style, month, year, currentMonth, currentYear, currentDay }) => {
-    const { selected } = Store.useState();
-    const daysPadded = arrayPadEnd(days, 7, null);
-
+  ({ weekIndex, monthIndex, style, currentMonth, currentYear, currentDay }) => {
     return (
       <View style={[styles.mainContainer, style]}>
-        {daysPadded.map((day, index) => {
-          const isSelected =
-            selected?.month === month &&
-            selected?.year === year &&
-            selected?.day === day;
+        {Array.from({ length: 7 }, (v, k) => k + 1).map((weekday, index) => {
           return (
             <Day
-              key={String(day || `i${index}`)}
-              isSelected={isSelected}
-              year={year}
-              month={month}
-              day={day}
+              key={String(index)}
+              weekIndex={weekIndex}
+              monthIndex={monthIndex}
+              weekday={weekday}
               currentYear={currentYear}
               currentMonth={currentMonth}
               currentDay={currentDay}
@@ -47,6 +33,113 @@ const Week = memo(
     );
   },
 );
+
+const Day = memo(
+  ({
+    monthIndex,
+    weekIndex,
+    weekday,
+    currentYear,
+    currentMonth,
+    currentDay,
+  }) => {
+    const dispatch = Store.useDispatch();
+    const { months, selected } = Store.useState();
+    const { year, month } = months[monthIndex];
+
+    let m = moment(`${year} ${month} 1`, "jYYYY jMM jD");
+    const monthDaysLength = moment.jDaysInMonth(year, month - 1);
+    const monthStartWeekDay = m.weekday();
+
+    const day = weekIndex * 7 + weekday - monthStartWeekDay;
+    const isInRange = day <= monthDaysLength && day > 0;
+
+    const isSelected =
+      isInRange &&
+      selected?.month === month &&
+      selected?.year === year &&
+      selected?.day === day;
+
+    const specialStyle = getDayInfo(
+      isSelected,
+      year,
+      month,
+      isInRange && day,
+      currentYear,
+      currentMonth,
+      currentDay,
+    );
+
+    const onPress = useCallback(() => {
+      isInRange && dispatch(select({ day, month, year }));
+    }, [isInRange, day, dispatch, month, year]);
+
+    return (
+      <TouchableOpacity
+        style={[styles.dayContainer, isSelected && styles.selectedDay]}
+        activeOpacity={0.7}
+        onPress={onPress}
+      >
+        {isInRange && (
+          <Text style={[styles.day, styles[specialStyle]]}>
+            {starkString(day)
+              .persianNumber()
+              .toString()}
+          </Text>
+        )}
+      </TouchableOpacity>
+    );
+  },
+);
+
+export const WeekNames = memo(
+  () => {
+    return (
+      <View style={[styles.mainContainer]}>
+        {["ش", "ی", "د", "س", "چ", "پ", "ج"].map(day => {
+          return (
+            <View key={day} style={styles.dayContainer}>
+              <Text style={[styles.day, styles.weekdayText]}>
+                {starkString(day)
+                  .persianNumber()
+                  .toString()}
+              </Text>
+            </View>
+          );
+        })}
+      </View>
+    );
+  },
+  () => true,
+);
+
+const getDayInfo = (
+  isSelected,
+  year,
+  month,
+  day,
+  currentYear,
+  currentMonth,
+  currentDay,
+) => {
+  let selectableDays = false;
+
+  if (currentYear < year) {
+    selectableDays = true;
+  } else if (currentYear > year) {
+    selectableDays = false;
+  } else if (month > currentMonth) {
+    selectableDays = true;
+  } else if (month === currentMonth && day >= currentDay) {
+    selectableDays = true;
+  }
+
+  if (isSelected) return "selectedDayText";
+
+  if (selectableDays) return "selectableDays";
+
+  return "previousDays";
+};
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -79,81 +172,5 @@ const styles = StyleSheet.create({
     color: colors.onPrimary,
   },
 });
-
-const Day = memo(
-  ({ isSelected, year, month, day, currentYear, currentMonth, currentDay }) => {
-    const dispatch = Store.useDispatch();
-
-    const { specialStyle } = getDayInfo(
-      isSelected,
-      year,
-      month,
-      day,
-      currentYear,
-      currentMonth,
-      currentDay,
-    );
-
-    const onPress = useCallback(() => {
-      day && dispatch(select({ day, month, year }));
-    }, [day, dispatch, month, year]);
-
-    return (
-      <TouchableOpacity
-        style={[styles.dayContainer, isSelected && styles.selectedDay]}
-        activeOpacity={0.7}
-        onPress={onPress}
-      >
-        {day && (
-          <Text style={[styles.day, styles[specialStyle]]}>
-            {starkString(day)
-              .persianNumber()
-              .toString()}
-          </Text>
-        )}
-      </TouchableOpacity>
-    );
-  },
-);
-
-const getDayInfo = (
-  isSelected,
-  year,
-  month,
-  day,
-  currentYear,
-  currentMonth,
-  currentDay,
-) => {
-  let selectableDays = false;
-  const weekdays = typeof day === "string";
-
-  if (currentYear < year) {
-    selectableDays = true;
-  } else if (currentYear > year) {
-    selectableDays = false;
-  } else if (month > currentMonth) {
-    selectableDays = true;
-  } else if (month === currentMonth && day >= currentDay) {
-    selectableDays = true;
-  }
-
-  function getStyle() {
-    if (weekdays) return "weekdayText";
-    if (isSelected) return "selectedDayText";
-
-    if (selectableDays) return "selectableDays";
-
-    return "previousDays";
-  }
-
-  const specialStyle = getStyle();
-
-  return {
-    specialStyle,
-    isSelected,
-    selectableDays,
-  };
-};
 
 export default Week;

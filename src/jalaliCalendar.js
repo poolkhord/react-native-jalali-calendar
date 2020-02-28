@@ -1,4 +1,4 @@
-import React, { useState, useRef, memo, useMemo, useCallback } from "react";
+import React, { useRef, memo, useMemo, useCallback } from "react";
 import { View, StyleSheet } from "react-native";
 import moment from "moment-jalaali";
 import { NavigateBar } from "./calendarItems";
@@ -7,7 +7,6 @@ import { colors } from "./assets";
 import { ViewPage } from "./pager";
 import { Store, reducerTypes, addToSelectedYear } from "./store";
 import { Provider } from "./storeModule";
-import { createMonthsList } from "./utils";
 
 const Calendar = memo(({ onSelect }) => {
   const viewPager = useRef();
