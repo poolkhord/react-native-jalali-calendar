@@ -95,7 +95,7 @@ const Day = memo(
     );
 
     const onPress = useCallback(() => {
-      dispatch(select({ day, month, year }));
+      day && dispatch(select({ day, month, year }));
     }, [day, dispatch, month, year]);
 
     return (
