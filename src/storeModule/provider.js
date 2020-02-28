@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useMemo, useCallback } from "react";
 
 /**
  * @type {React.FC<{store: any,dispatchListener:()=> void}}>}
@@ -6,18 +6,20 @@ import React, { useReducer } from "react";
 export const Provider = ({ children, store, dispatchListener }) => {
   const { reducer, initialState, middleware } = store;
   const [state, dispatch] = useReducer(reducer, initialState);
-  store.state = state;
 
-  store.dispatch = (...arg) => {
-    dispatch(...arg);
-    dispatchListener?.(...arg);
-  };
+  const dispatchWrapper = useCallback(
+    (...arg) => {
+      dispatch(...arg);
+      dispatchListener?.(...arg);
+    },
+    [dispatchListener],
+  );
 
   middleware && middleware({ state, initialState });
 
-  Object.values(store.subscription).forEach(({ onStateChange }) => {
-    onStateChange?.();
-  });
+  const value = useMemo(() => {
+    return [state, dispatchWrapper];
+  }, [state, dispatchWrapper]);
 
-  return <store.Provider value={state} children={children} />;
+  return <store.Provider value={value} children={children} />;
 };

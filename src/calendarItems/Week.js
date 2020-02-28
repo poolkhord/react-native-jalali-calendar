@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from "react";
+import React, { memo, useCallback, useContext } from "react";
 import {
   View,
   TouchableOpacity,
@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
 
 const Day = memo(
   ({ isSelected, year, month, day, currentYear, currentMonth, currentDay }) => {
+    const [, dispatch] = useContext(Store);
     const { specialStyle } = getDayInfo(
       isSelected,
       year,
@@ -93,8 +94,8 @@ const Day = memo(
     );
 
     const onPress = useCallback(() => {
-      Store.dispatch(select({ day, month, year }));
-    }, [day, month, year]);
+      dispatch(select({ day, month, year }));
+    }, [day, dispatch, month, year]);
 
     return (
       <TouchableOpacity

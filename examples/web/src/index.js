@@ -22,12 +22,16 @@ if (style.styleSheet) {
 document.head.appendChild(style);
 
 ////  end #1
+const App = () => {
+  return (
+    <Suspense fallback={<View />}>
+      <JalaliCalendar onSelect={arg => console.log("action1", arg)} />
+      <JalaliCalendar onSelect={arg => console.log("action2", arg)} />
+    </Suspense>
+  );
+};
 
-AppRegistry.registerComponent("examples-web", () => () => (
-  <Suspense fallback={<View />}>
-    <JalaliCalendar onSelect={arg => console.log("action", arg)} />
-  </Suspense>
-));
+AppRegistry.registerComponent("examples-web", () => App);
 AppRegistry.runApplication("examples-web", {
   rootTag: document.getElementById("root"),
 });

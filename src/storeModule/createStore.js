@@ -28,13 +28,7 @@ export const createStore = ({ reducer, initialState, middleware }) => {
     reducer,
     initialState,
     middleware,
-    state: initialState,
-    subscription: {},
-    useStore: () => [useContext(context), context.dispatch],
-    // this is just for test
-    dispatch(state) {
-      Object.assign(context, { state });
-    },
+    useStore: () => useContext(context),
   });
 
   return context;
