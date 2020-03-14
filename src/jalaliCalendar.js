@@ -5,9 +5,9 @@ import { NavigateBar } from "./calendarItems";
 import CalendarComponent from "./CalendarComponent";
 import { colors } from "./assets";
 import { ViewPage } from "./pager";
-import { StoreCalendar, reducerTypes, addToSelectedYear } from "./store";
+import { StoreCalendar, addToSelectedYear } from "./store";
 import { Provider } from "./storeModule";
-import { StoreSelect } from "./storeSelect";
+import { StoreSelect, reducerTypes } from "./storeSelect";
 
 const Calendar = memo(({ onSelect }) => {
   const viewPager = useRef();
